@@ -1,0 +1,37 @@
+using System;
+using System.IO;
+using System.Diagnostics;
+using System.Threading.Tasks;
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Пути к файлам
+        string sourceFile = "C:\\Users\\Марат\\Desktop\\A B C.txt";
+        string destinationFile1 = "C:\\Users\\Марат\\Desktop\\Копия 1.txt";
+        string destinationFile2 = "C:\\Users\\Марат\\Desktop\\Копия 2.txt";
+
+        // Последовательное копирование
+        Console.WriteLine("Последовательное копирование:");
+        Stopwatch stopwatch = Stopwatch.StartNew();
+
+        File.Copy(sourceFile, destinationFile1, true);
+        File.Copy(sourceFile, destinationFile2, true);
+
+        stopwatch.Stop();
+        Console.WriteLine($"Время выполнения: {stopwatch.ElapsedMilliseconds} мс");
+
+        // Параллельное копирование
+        Console.WriteLine("\nПараллельное копирование:");
+        stopwatch.Restart();
+
+        Parallel.Invoke(
+            () => File.Copy(sourceFile, destinationFile1, true),
+            () => File.Copy(sourceFile, destinationFile2, true)
+        );
+
+        stopwatch.Stop();
+        Console.WriteLine($"Время выполнения: {stopwatch.ElapsedMilliseconds} мс");
+    }
+}
